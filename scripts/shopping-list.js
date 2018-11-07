@@ -96,10 +96,13 @@ const shoppingList = (function(){
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       console.log(`event running`)
       const id = getItemIdFromElement(event.currentTarget);
-      const checkedId = store.item.id.checked 
-     
-      api.updateItem(id, !checkedId, function() {
-        store.findAndUpdate(id, checkedId)
+
+      const checked = store.items.find(item => item.id === id).checked 
+      console.log(checked)
+
+      api.updateItem(id, {checked: !checked}, function() {
+        store.findAndUpdate(id, {checked: !checked})
+        console.log(store)
         render();
       }); 
     });
