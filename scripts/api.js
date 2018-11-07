@@ -10,6 +10,7 @@ const api = (function(){
     $.getJSON(`${BASE_URL}/items`, callback);
   };
 
+
   const createItem = function(name, callback) {
 
     //should we use longhand? name: name
@@ -17,7 +18,7 @@ const api = (function(){
 
     //do we have to wrap key/value in quotations?
     $.ajax({
-      url: BASE_URL,
+      url: `${BASE_URL}/items`,
       method: 'POST',
       contentType: 'application/json',
       data: newItem, 
