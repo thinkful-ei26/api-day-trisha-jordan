@@ -1,4 +1,6 @@
+'use strict';
 /* global cuid */
+/*eslint-env jquery*/
 
 // eslint-disable-next-line no-unused-vars
 const Item = (function(){
