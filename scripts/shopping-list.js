@@ -1,5 +1,5 @@
 'use strict';
-/* global store, $ */
+/* global store, $, api, store */
 /*eslint-env jquery*/
 
 // eslint-disable-next-line no-unused-vars
@@ -62,7 +62,7 @@ const shoppingList = (function(){
     $('.js-shopping-list').html(shoppingListItemsString);
   }
   
-  
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>
   function handleNewItemSubmit() {
 
     $('#js-shopping-list-form').submit(function (event) {
@@ -104,7 +104,7 @@ const shoppingList = (function(){
       render();
     });
   }
-  
+  // >>>>>>>>>>>>>>>>>
   function handleEditShoppingItemSubmit() {
     $('.js-shopping-list').on('submit', '.js-edit-item', event => {
       event.preventDefault();
@@ -112,6 +112,10 @@ const shoppingList = (function(){
       const itemName = $(event.currentTarget).find('.shopping-item').val();
       store.findAndUpdateName(id, itemName);
       store.setItemIsEditing(id, false);
+
+      api.updateItem(id, {newName});
+
+
       render();
     });
   }
