@@ -85,23 +85,34 @@ const shoppingList = (function(){
       .data('item-id');
   }
   
-     // const updateItem = function(id, updateData, callback)
-      //^^^^ what we're grabbing 
-      //grab current store item that user is trying to check
-      //then call api.updateItem
-      //opposite needs to be a new object 
+  // const updateItem = function(id, updateData, callback)
+  //^^^^ what we're grabbing 
+  //grab current store item that user is trying to check
+  //then call api.updateItem
+  //opposite needs to be a new object 
   function handleItemCheckClicked() {
-    console.log(`handleItemCheckClicked Ran`);
+    console.log('handleItemCheckClicked Ran');
     
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
-      console.log(`event running`)
+      console.log('event running');
       const id = getItemIdFromElement(event.currentTarget);
-      const checkedId = store.item.id.checked 
+      //why is the value of store.item.checked undefined?
+      // not really sure if we need to use ternary
+      const checkedId = store.item ? false : true;
      
-      api.updateItem(id, !checkedId, function() {
-        store.findAndUpdate(id, checkedId)
+      //should we pass in checkedId as object?
+      api.updateItem(id, checkedId, function() {
+        store.findAndUpdate(id, checkedId);
         render();
       }); 
+
+      //bug: item is either always checked (WORKS-ish)
+      // how do we make it so that the state of store.items.checked changes after the event. It can't be inside the api, because it's already too late
+      // api.updateItem(id, {checked: false}, function() {
+      //   store.findAndUpdate(id, {checked: false});
+      //   render();
+      // }); 
+
     });
   }
 
@@ -129,11 +140,11 @@ const shoppingList = (function(){
 
       api.createItem(id, (newName) => {
         store.addItem(newName);
-        store.findAndUpdate(id, newName)
-      render();
+        store.findAndUpdate(id, newName);
+        render();
+      });
     });
-  });
-}
+  }
   
   function handleToggleFilterClick() {
     $('.js-filter-checked').click(() => {
