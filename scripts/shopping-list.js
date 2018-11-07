@@ -85,13 +85,26 @@ const shoppingList = (function(){
       .data('item-id');
   }
   
+     // const updateItem = function(id, updateData, callback)
+      //^^^^ what we're grabbing 
+      //grab current store item that user is trying to check
+      //then call api.updateItem
+      //opposite needs to be a new object 
   function handleItemCheckClicked() {
+    console.log(`handleItemCheckClicked Ran`);
+    
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
+      console.log(`event running`)
       const id = getItemIdFromElement(event.currentTarget);
-      store.findAndToggleChecked(id);
-      render();
+      const checkedId = store.item.id.checked 
+     
+      api.updateItem(id, !checkedId, function() {
+        store.findAndUpdate(id, checkedId)
+        render();
+      }); 
     });
   }
+
   
   function handleDeleteItemClicked() {
     // like in `handleItemCheckClicked`, we use event delegation
@@ -104,6 +117,7 @@ const shoppingList = (function(){
       render();
     });
   }
+
   // >>>>>>>>>>>>>>>>>
   function handleEditShoppingItemSubmit() {
     $('.js-shopping-list').on('submit', '.js-edit-item', event => {
@@ -113,12 +127,13 @@ const shoppingList = (function(){
       store.findAndUpdateName(id, itemName);
       store.setItemIsEditing(id, false);
 
-      api.updateItem(id, {newName});
-
-
+      api.createItem(id, (newName) => {
+        store.addItem(newName);
+        store.findAndUpdate(id, newName)
       render();
     });
-  }
+  });
+}
   
   function handleToggleFilterClick() {
     $('.js-filter-checked').click(() => {
